@@ -13,10 +13,22 @@
     <artifactId>emoji-art</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
+    <name>${project.artifactId}</name>
+    <description>Create ASCII art versions of unicode emojis.</description>
+    <url>https://github.com/nidi3/emoji-art</url>
+    <inceptionYear>2017</inceptionYear>
+
     <properties>
         <java.version>1.8</java.version>
         <kotlin.version>1.1.4</kotlin.version>
     </properties>
+
+    <scm>
+        <connection>scm:git:https://github.com/nidi3/emoji-art</connection>
+        <developerConnection>scm:git:https://github.com/nidi3/emoji-art</developerConnection>
+        <url>https://github.com/nidi3/emoji-art</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <build>
         <sourceDirectory>src/main/kotlin</sourceDirectory>
@@ -32,7 +44,7 @@
                 <executions>
                     <execution>
                         <id>compile</id>
-                        <phase>compile</phase>
+                        <phase>process-sources</phase>
                         <goals>
                             <goal>compile</goal>
                         </goals>
