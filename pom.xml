@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>emoji-art</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
 
     <name>${project.artifactId}</name>
     <description>Create ASCII art versions of unicode emojis.</description>
