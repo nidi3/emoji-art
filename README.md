@@ -7,4 +7,4 @@ Convert emojis into ascii art (html or ansi).
 
 Usage examples can be found in the test folders.
 
-Have fun!
+[https://nidi3.github.io/emoji-art/smile.html](Have fun!)
