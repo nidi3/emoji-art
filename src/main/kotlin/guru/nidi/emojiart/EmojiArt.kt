@@ -26,9 +26,11 @@ import javax.script.ScriptEngineManager
 
 private val cl = Thread.currentThread().contextClassLoader!!
 
-private val engine = ScriptEngineManager().getEngineByExtension("js")!!.apply {
-    eval(InputStreamReader(cl.getResourceAsStream("img2txt.js")))
-    eval("__log=[]; window={}; console={log:function(x){__log.push(x);}};")
+private val engine by lazy {
+    ScriptEngineManager().getEngineByExtension("js")!!.apply {
+        eval(InputStreamReader(cl.getResourceAsStream("img2txt.js")))
+        eval("__log=[]; window={}; console={log:function(x){__log.push(x);}};")
+    }
 }
 
 private val namesFile = File("src/main/resources/image-names.txt")
