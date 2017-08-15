@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Emoji ASCII art</title>
     <script src="../src/main/resources/img2txt.js"></script>
     <script src="canvas2image.js"></script>
@@ -11,11 +12,24 @@
 <style>
     input, select {
         font-size: 150%;
+        width: 50%;
+        min-width: 512px;
+        margin: 5px;
     }
+
+    @media (max-width: 512px) {
+        input, select {
+            width: 100%;
+            min-width: 100%;
+        }
+    }
+
 </style>
 
 <select id="select" onchange="demo.convert()"></select>
+<br>
 <input id="background" placeholder="background color" onkeypress="demo.key(event)" onblur="demo.convert()">
+<br>
 <input id="size" placeholder="size" onkeypress="demo.key(event)" onblur="demo.convert()">
 
 <canvas id="canvas" style="display:none; width: 64px; height: 64px" width="64" height="64"></canvas>

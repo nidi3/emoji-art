@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     fetch('../src/main/resources/image-names.txt')
-    // fetch('http://localhost:63342/emoji-art/src/main/resources/image-names.txt?_ijt=23p1m541fqbc1gt69jbuevdm77')
+    // fetch('http://localhost:63342/emoji-art/src/main/resources/image-names.txt?_ijt=81jr6qp25d8mo1m7btpcuf62su')
         .then(res => res.text())
         .then(text => {
             var names = text.split('\n');
