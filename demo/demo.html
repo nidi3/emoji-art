@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Emoji ASCII art</title>
+    <script src="../src/main/resources/img2txt.js"></script>
+    <script src="canvas2image.js"></script>
+    <script src="demo.js"></script>
+</head>
+<body>
+<style>
+    input, select {
+        font-size: 150%;
+    }
+</style>
+
+<select id="select" onchange="demo.convert()"></select>
+<input id="background" placeholder="background color" onkeypress="demo.key(event)" onblur="demo.convert()">
+<input id="size" placeholder="size" onkeypress="demo.key(event)" onblur="demo.convert()">
+
+<canvas id="canvas" style="display:none; width: 64px; height: 64px" width="64" height="64"></canvas>
+
+<div id="output" style="margin-top: 10px; font-size: 50%"></div>
+
+</body>
+</html>
