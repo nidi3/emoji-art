@@ -20,8 +20,7 @@ fun main(args: Array<String>) {
     val width = if (args.size > 1) args[1].toInt() else 80
     val back = if (args.size > 2) args[2].toInt(16) else 0
 
-    val names = init()
     val image = image(name)
-    if (image != null) println(image.alphaBlend(back).convertTo("ansi", width))
-    else println("'$name' is unknown. Did you mean ${proposals(name, names, 5).joinToString(", ")}?")
+    if (image != null) println(image.convertTo("ansi", width, back))
+    else println("'$name' is unknown. Did you mean ${proposals(name, imageList(), 5).joinToString(", ")}?")
 }

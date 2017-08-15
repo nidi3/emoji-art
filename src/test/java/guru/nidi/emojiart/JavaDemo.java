@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static guru.nidi.emojiart.EmojiArtKt.*;
+import static java.util.stream.Collectors.joining;
 
 public class JavaDemo {
     public static void main(String[] args) {
@@ -27,13 +28,11 @@ public class JavaDemo {
         int width = args.length > 1 ? Integer.parseInt(args[1]) : 80;
         int back = args.length > 2 ? Integer.parseInt(args[2], 16) : 0;
 
-        List<String> names = init();
         BufferedImage image = image(name);
         if (image != null) {
-            final BufferedImage img = alphaBlend(image, back);
-            System.out.println(convertTo(img, "ansi", width));
+            System.out.println(convertTo(image, "ansi", width, back));
         } else {
-            String props = proposals(name, names, 5).stream().collect(Collectors.joining(", "));
+            String props = proposals(name, imageList(), 5).stream().collect(joining(", "));
             System.out.println("'" + name + "' is unknown. Did you mean " + props + "?");
         }
     }

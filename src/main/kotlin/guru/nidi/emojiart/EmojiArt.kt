@@ -24,27 +24,49 @@ import javax.imageio.ImageIO
 import javax.script.ScriptContext
 import javax.script.ScriptEngineManager
 
-val engine = ScriptEngineManager().getEngineByExtension("js")!!
-val cl = Thread.currentThread().contextClassLoader!!
+private val cl = Thread.currentThread().contextClassLoader!!
 
-fun proposals(name: String, names: List<String>, count: Int) = names.sortedBy { levenshtein(it, name) }.take(count)
+private val engine = ScriptEngineManager().getEngineByExtension("js")!!.apply {
+    eval(InputStreamReader(cl.getResourceAsStream("img2txt.js")))
+    eval("__log=[]; window={}; console={log:function(x){__log.push(x);}};")
+}
 
-fun init(): List<String> {
-    engine.eval(InputStreamReader(cl.getResourceAsStream("img2txt.js")))
-    engine.eval("__log=[]; window={}; console={log:function(x){__log.push(x);}};")
-    return downloadImages()
+private val namesFile = File("src/main/resources/image-names.txt")
+
+fun imageList(): List<String> {
+    if (namesFile.exists()) return namesFile.readLines()
+    val names = cl.getResourceAsStream("image-names.txt")?.let { InputStreamReader(it).readLines() }
+    return if (names != null) names else downloadImages()
 }
 
 fun image(name: String) = cl.getResourceAsStream("images/$name.png")?.let { ImageIO.read(it) }
 
-fun BufferedImage.convertTo(format: String, width: Int): String {
+fun proposals(name: String, names: List<String>, count: Int) = names.sortedBy { levenshtein(it, name) }.take(count)
+
+fun BufferedImage.convertTo(format: String, width: Int, background: Int): String {
     val buf = ByteArrayOutputStream()
-    ImageIO.write(this, "BMP", buf)
+    ImageIO.write(this.alphaBlend(background), "BMP", buf)
     engine.context.setAttribute("data", buf.toByteArray(), ScriptContext.ENGINE_SCOPE)
     return engine.eval("img2txt(data,['-f','$format','-W','$width','-d','none','test.bmp'])") as String
 }
 
-fun BufferedImage.alphaBlend(back: Int): BufferedImage {
+private fun levenshtein(s1: String, s2: String): Int {
+    val edits = Array(s1.length + 1) { IntArray(s2.length + 1) }
+    for (i in 0..s1.length) edits[i][0] = i
+    for (i in 1..s2.length) edits[0][i] = i
+    for (i in 1..s1.length) {
+        for (j in 1..s2.length) {
+            val u = if (s1[i - 1] == s2[j - 1]) 0 else 1
+            edits[i][j] = Math.min(
+                    edits[i - 1][j] + 1,
+                    Math.min(edits[i][j - 1] + 1, edits[i - 1][j - 1] + u)
+            )
+        }
+    }
+    return edits[s1.length][s2.length]
+}
+
+private fun BufferedImage.alphaBlend(back: Int): BufferedImage {
     fun red(c: Int) = (c shr 16) and 0xff
     fun green(c: Int) = (c shr 8) and 0xff
     fun blue(c: Int) = (c shr 0) and 0xff
@@ -64,15 +86,12 @@ fun BufferedImage.alphaBlend(back: Int): BufferedImage {
     return out
 }
 
-fun downloadImages(): List<String> {
+private fun downloadImages(): List<String> {
     fun URL.toText() = InputStreamReader(openStream()).readText()
 
     fun URL.toFile(file: File) = openStream().use { input ->
         file.outputStream().use { input.copyTo(it) }
     }
-
-    val namesFile = File("src/main/resources/image-names.txt")
-    if (namesFile.exists()) return namesFile.readLines()
 
     val html = URL("https://www.webpagefx.com/tools/emoji-cheat-sheet/").toText()
     val names = Regex("""data-src="(.+?)".*?">(.+?)</""").findAll(html).map {
@@ -85,23 +104,3 @@ fun downloadImages(): List<String> {
     namesFile.writeText(names.joinToString("\n"))
     return names
 }
-
-fun levenshtein(s1: String, s2: String): Int {
-    val edits = Array(s1.length + 1) { IntArray(s2.length + 1) }
-    for (i in 0..s1.length) edits[i][0] = i
-    for (i in 1..s2.length) edits[0][i] = i
-    for (i in 1..s1.length) {
-        for (j in 1..s2.length) {
-            val u = if (s1[i - 1] == s2[j - 1]) 0 else 1
-            edits[i][j] = Math.min(
-                    edits[i - 1][j] + 1,
-                    Math.min(edits[i][j - 1] + 1, edits[i - 1][j - 1] + u)
-            )
-        }
-    }
-    return edits[s1.length][s2.length]
-}
-
-
-
-
