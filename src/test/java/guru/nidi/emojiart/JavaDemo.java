@@ -16,10 +16,8 @@
 package guru.nidi.emojiart;
 
 import java.awt.image.BufferedImage;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import static guru.nidi.emojiart.EmojiArtKt.*;
+import static guru.nidi.emojiart.EmojiArt.*;
 import static java.util.stream.Collectors.joining;
 
 public class JavaDemo {

@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:JvmName(name = "EmojiArt")
+
 package guru.nidi.emojiart
 
 import java.awt.image.BufferedImage
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.InputStreamReader
+import java.io.*
 import java.net.URL
 import javax.imageio.ImageIO
 import javax.script.ScriptContext
