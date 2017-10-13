@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>emoji-art</artifactId>
-    <version>0.0.7-SNAPSHOT</version>
+    <version>0.0.7</version>
 
     <name>${project.artifactId}</name>
     <description>Create ASCII art versions of unicode emojis.</description>
@@ -26,7 +26,7 @@
         <connection>scm:git:https://github.com/nidi3/emoji-art</connection>
         <developerConnection>scm:git:https://github.com/nidi3/emoji-art</developerConnection>
         <url>https://github.com/nidi3/emoji-art</url>
-        <tag>HEAD</tag>
+        <tag>emoji-art-0.0.7</tag>
     </scm>
 
     <build>
