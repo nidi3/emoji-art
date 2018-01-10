@@ -16,23 +16,21 @@
 package guru.nidi.emojiart
 
 class Eyer {
-    private var thread: Thread? = null
-    @Volatile private var running = true
+    @Volatile private var running = false
 
     fun start() {
-        if (thread == null) {
-            thread = Thread {
+        if (!running) {
+            running = true
+            Thread {
                 while (running) {
                     eyes("(o)(o)", 800, 1200)
-                    if (Math.random() < .2) {
-                        bigEyes()
-                    } else if (Math.random() < .4) {
-                        oneEye()
-                    } else {
-                        blink()
+                    val r = Math.random()
+                    when {
+                        r < .2 -> bigEyes()
+                        r < .4 -> oneEye()
+                        else -> blink()
                     }
                 }
-                thread = null
             }.apply {
                 isDaemon = true
                 start()
@@ -51,13 +49,22 @@ class Eyer {
     }
 
     private fun oneEye() {
-        val s = if (Math.random() < .5) "(-)(o)(_)(O)" else "(o)(-)(O)(_)"
+        val r = Math.random()
+        val s = when {
+            r < .5 -> "(-)(o)(_)(O)"
+            else -> "(o)(-)(O)(_)"
+        }
         eyes(s.substring(0, 6), 50, 150)
         eyes(s.substring(6, 12), 500, 800)
     }
 
     private fun blink() {
-        val s = if (Math.random() < .3) "(-)(-)(_)(_)" else if (Math.random() < .66) "(-)(o)(_)(o)" else "(o)(-)(o)(_)"
+        val r = Math.random()
+        val s = when {
+            r < .33 -> "(-)(-)(_)(_)"
+            r < .66 -> "(-)(o)(_)(o)"
+            else -> "(o)(-)(o)(_)"
+        }
         eyes(s.substring(0, 6), 20, 50)
         eyes(s.substring(6, 12), 20, 50)
     }
