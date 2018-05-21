@@ -37,8 +37,7 @@ private val namesFile = File("src/main/resources/image-names.txt")
 
 fun imageList(): List<String> {
     if (namesFile.exists()) return namesFile.readLines()
-    val names = cl.getResourceAsStream("image-names.txt")?.let { InputStreamReader(it).readLines() }
-    return if (names != null) names else downloadImages()
+    return cl.getResourceAsStream("image-names.txt")?.let { InputStreamReader(it).readLines() } ?: downloadImages()
 }
 
 fun image(name: String) = cl.getResourceAsStream("images/$name.png")?.let { ImageIO.read(it) }
@@ -75,8 +74,8 @@ private fun BufferedImage.alphaBlend(back: Int): BufferedImage {
     fun sat(c: Double) = Math.min(255, c.toInt())
 
     val out = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
-    for (x in 0..width - 1) {
-        for (y in 0..height - 1) {
+    for (x in 0 until width) {
+        for (y in 0 until height) {
             val c = getRGB(x, y)
             val alpha = ((c shr 24) and 0xff) / 256.toDouble()
             val r = sat(red(c) * alpha + red(back) * (1 - alpha))
