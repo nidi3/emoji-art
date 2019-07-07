@@ -18,7 +18,6 @@ package guru.nidi.emojiart;
 import java.awt.image.BufferedImage;
 
 import static guru.nidi.emojiart.EmojiArt.*;
-import static java.util.stream.Collectors.joining;
 
 public class JavaDemo {
     public static void main(String[] args) {
@@ -30,7 +29,7 @@ public class JavaDemo {
         if (image != null) {
             System.out.println(convertTo(image, "ansi", width, back));
         } else {
-            String props = proposals(name, imageList(), 5).stream().collect(joining(", "));
+            String props = String.join(", ", proposals(name, imageList(), 5));
             System.out.println("'" + name + "' is unknown. Did you mean " + props + "?");
         }
     }

@@ -1,9 +1,9 @@
-var demo = {};
+let demo = {};
 
 document.addEventListener('DOMContentLoaded', function () {
-    var canvas = document.getElementById('canvas');
-    var ctx = canvas.getContext('2d');
-    var elem = {
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    let elem = {
         select: document.getElementById('select'),
         back: document.getElementById('background'),
         size: document.getElementById('size'),
@@ -14,10 +14,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // fetch('http://localhost:63342/emoji-art/src/main/resources/image-names.txt?_ijt=81jr6qp25d8mo1m7btpcuf62su')
         .then(res => res.text())
         .then(text => {
-            var names = text.split('\n');
+            let names = text.split('\n');
             names.sort();
-            for (var i = 0; i < names.length; i++) {
-                var opt = document.createElement('option');
+            for (let i = 0; i < names.length; i++) {
+                let opt = document.createElement('option');
                 opt.value = names[i];
                 opt.innerHTML = names[i];
                 elem.select.appendChild(opt);
@@ -32,17 +32,16 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     demo.convert = function () {
-        var name = elem.select.selectedOptions[0].value;
-        var img = new Image();
+        let name = elem.select.selectedOptions[0].value;
+        let img = new Image();
         img.onload = function () {
-            var back = elem.back.value || '#ffffff';
-            var width = parseInt(elem.size.value) || 100;
+            let back = elem.back.value || '#ffffff';
+            let width = parseInt(elem.size.value) || 100;
             ctx.fillStyle = back;
             ctx.fillRect(0, 0, 64, 64);
             ctx.drawImage(img, 0, 0);
-            var bmp = Canvas2Image.saveAsRawBMP(canvas);
-            var txt = img2txt(bmp, ['-f', 'html', '-W', width, 'test.bmp']);
-            elem.output.innerHTML = txt;
+            let bmp = Canvas2Image.saveAsRawBMP(canvas);
+            elem.output.innerHTML = img2txt(bmp, ['-f', 'html', '-W', width, 'test.bmp']);
         };
         img.src = '../src/main/resources/images/' + encodeURIComponent(name) + '.png';
     };

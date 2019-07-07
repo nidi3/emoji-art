@@ -23,12 +23,13 @@ import java.net.URL
 import javax.imageio.ImageIO
 import javax.script.ScriptContext
 import javax.script.ScriptEngineManager
+import kotlin.math.min
 
 private val cl = Thread.currentThread().contextClassLoader!!
 
 private val engine by lazy {
     ScriptEngineManager().getEngineByExtension("js")!!.apply {
-        eval(InputStreamReader(cl.getResourceAsStream("img2txt.js")))
+        eval(InputStreamReader(cl.getResourceAsStream("img2txt.js")!!))
         eval("__log=[]; window={}; console={log:function(x){__log.push(x);}};")
     }
 }
@@ -58,10 +59,7 @@ private fun levenshtein(s1: String, s2: String): Int {
     for (i in 1..s1.length) {
         for (j in 1..s2.length) {
             val u = if (s1[i - 1] == s2[j - 1]) 0 else 1
-            edits[i][j] = Math.min(
-                    edits[i - 1][j] + 1,
-                    Math.min(edits[i][j - 1] + 1, edits[i - 1][j - 1] + u)
-            )
+            edits[i][j] = min(edits[i - 1][j] + 1, min(edits[i][j - 1] + 1, edits[i - 1][j - 1] + u))
         }
     }
     return edits[s1.length][s2.length]
@@ -71,7 +69,7 @@ private fun BufferedImage.alphaBlend(back: Int): BufferedImage {
     fun red(c: Int) = (c shr 16) and 0xff
     fun green(c: Int) = (c shr 8) and 0xff
     fun blue(c: Int) = (c shr 0) and 0xff
-    fun sat(c: Double) = Math.min(255, c.toInt())
+    fun sat(c: Double) = min(255, c.toInt())
 
     val out = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
     for (x in 0 until width) {
